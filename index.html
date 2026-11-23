@@ -56,15 +56,44 @@ h1{margin:0;font-size:22px;font-weight:700;letter-spacing:.5px}.sub{font-size:11
 .task{padding:7px 0;border-top:1px solid #eee}.tt{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:13px}
 .meta{font-size:11px;color:#666;margin:4px 0 4px}.tb{height:6px;border-radius:4px;background:#e4e8ec;overflow:hidden}.tb i{display:block;height:100%}
 .note{font-size:11px;color:var(--mut);flex:none}
+
+.nav{display:flex;gap:3px;background:var(--glass);border:1px solid var(--bd);border-radius:12px;padding:3px}
+.nav button{font:600 12.5px inherit;font-family:inherit;color:var(--mut);background:none;border:0;border-radius:9px;padding:8px 18px;cursor:pointer;transition:.2s}
+.nav button:hover{color:#fff}.nav button.on{background:var(--b);color:#fff;box-shadow:0 2px 10px #0a84ff66}
+.view{display:none}.view.on{display:flex}
+.col{flex-direction:column;gap:12px;min-height:0}.row{display:flex;gap:12px;min-height:0}
+.kcard{flex:1;padding:10px 14px}.kcard .kv{font-size:28px}
+.rl{width:310px;flex:none;display:flex;flex-direction:column;min-height:0}
+.rl .lst{flex:1;overflow:auto;margin:0 -6px}
+.ri{display:flex;justify-content:space-between;gap:8px;align-items:center;padding:8px 10px;border-radius:10px;cursor:pointer;font-size:12px}
+.ri:hover{background:rgba(255,255,255,.08)}.ri.on{background:rgba(10,132,255,.25)}.ri small{color:var(--mut);display:block;font-size:10.5px}
+.gt{flex:1;min-width:0;background:#fff;color:#222;border-radius:18px;padding:12px 16px;display:flex;flex-direction:column}
+.gt select{font:600 12.5px inherit;font-family:inherit;border:1px solid #d5dbe3;border-radius:8px;padding:6px 10px;max-width:380px}
+.gh,.gr{display:flex;align-items:center;font-size:11.5px}
+.gh{background:#17294a;color:#fff;font-weight:600;border-radius:8px;margin-top:8px;height:30px}
+.gr{border-bottom:1px solid #eef0f3;height:37px}
+.gh>div,.gr>div{padding:0 6px;flex:none;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.c1{width:26px}.c2{width:190px}.c3{width:64px}.c4{width:68px}.c5{width:68px}.c6{width:44px}.c7{width:86px}
+.tl{flex:1!important;position:relative;height:100%}
+.gh .tl span{position:absolute;top:8px;font-size:10px;font-weight:500;transform:translateX(-50%)}
+.tl i{position:absolute;top:0;bottom:0;width:1px;background:#eef0f3}
+.tl .seg{position:absolute;top:15px;height:7px;border-radius:4px}.tl .dm{position:absolute;top:13px;width:11px;height:11px;transform:translateX(-50%) rotate(45deg);border-radius:2px}
+.tl .td{position:absolute;top:0;bottom:0;width:2px;background:#ff9f0a}
+.lg{display:flex;gap:14px;font-size:11px;color:#555;margin-top:8px}.lg b{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:5px;vertical-align:-1px}
+.bl{display:flex;align-items:center;gap:8px;font-size:12px;margin:7px 0}.bl span:first-child{width:118px;flex:none;color:#cfd8e8;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.bl .bar{flex:1;margin:0}.bl .bar i{background:var(--c,#0a84ff)}.bl em{font-style:normal;font-weight:700;width:34px;text-align:right}
+.tbl{width:100%;border-collapse:collapse;font-size:12px}.tbl th{text-align:left;font-size:10px;letter-spacing:.7px;text-transform:uppercase;color:var(--mut);padding:4px 6px}
+.tbl td{padding:6px;border-top:1px solid var(--bd)}
 </style>
 </head>
 <body>
 <div id="stage">
   <header>
     <div><h1>OPM CONTROL CENTER</h1><div class="sub">PROJECT MANAGEMENT | BHARAT FIH</div></div>
+    <div class="nav" id="nav"><button data-v="v-ov" class="on">Overview</button><button data-v="v-risk">Risk overview</button><button data-v="v-sum">Summary</button></div>
     <div class="hr" id="port"></div>
   </header>
-  <div class="body">
+  <div class="body view on" id="v-ov">
     <div class="left">
       <div class="card">
         <div class="lab">Project Selection</div>
@@ -85,6 +114,25 @@ h1{margin:0;font-size:22px;font-weight:700;letter-spacing:.5px}.sub{font-size:11
       <div class="card pl"><div class="plh"><div class="lab" style="margin:0">Production Line</div><div class="ks" id="plsub"></div></div><div class="steps" id="steps"></div></div>
       <div class="kpis" id="kpis"></div>
       <div class="tasks"><div class="th"><b>TASK MONITORING</b><span class="pill pc" id="cnt">–</span></div><div class="list" id="list"></div></div>
+    </div>
+  </div>
+  <div class="view col" id="v-risk" style="flex:1">
+    <div class="kpis" id="rk"></div>
+    <div class="row" style="flex:1">
+      <div class="card rl"><div class="lab">Needs attention · open fixtures</div><div class="lst" id="rlist"></div></div>
+      <div class="gt"><div class="th"><b>TIMELINE · PLAN vs ACTUAL</b><select id="rsel"></select></div>
+        <div class="gh"><div class="c1">ID</div><div class="c2">Task / Milestone</div><div class="c3">Dept</div><div class="c4">Planned</div><div class="c5">Actual</div><div class="c6">%</div><div class="c7">Status</div><div class="tl" id="gax"></div></div>
+        <div id="grows" style="flex:1;overflow:auto"></div>
+        <div class="lg"><span><b style="background:#0a84ff"></b>Planned</span><span><b style="background:#12b076"></b>Actual on time</span><span><b style="background:#e05252"></b>Delay / overdue</span><span><b style="background:#ff9f0a"></b>Today</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="view col" id="v-sum" style="flex:1">
+    <div class="kpis" id="sk"></div>
+    <div class="row" style="flex:1">
+      <div class="card" style="flex:1"><div class="lab">Delivery status</div><div id="s1"></div><div class="lab" style="margin-top:14px">Overall health</div><div id="s2"></div></div>
+      <div class="card" style="flex:1"><div class="lab">Fixtures by site</div><div id="s3"></div><div class="lab" style="margin-top:14px">Fixtures by phase</div><div id="s4"></div></div>
+      <div class="card" style="flex:1.5;overflow:auto"><div class="lab">Most overdue open fixtures</div><table class="tbl" id="s5"></table></div>
     </div>
   </div>
 </div>
@@ -183,6 +231,59 @@ function portfolio(live,msg){
    +`<div class="chip">Dispatched ${disp}/${D.length}</div>`
    +(live?`<span class="live">LIVE · ${new Date().toLocaleTimeString()}</span>`:`<span class="live" style="color:#ff8a8a;background:#4a1d24" title="${msg}">OFFLINE</span>`);
 }
+
+// ===== PAGES =====
+const num=v=>{const n=parseFloat(v);return isNaN(n)?null:n};
+const open_=D_=>D_.filter(r=>r["Dispatched?"]!=="Yes"&&r["Delivery Status"]!=="Cancelled");
+const short=k=>k.split("|").slice(1,3).join("|").trim();
+const kcard=(a,b,s,c)=>`<div class="card kcard"><div class="lab" style="margin-bottom:3px">${a}</div><div class="kv" style="color:${c||"#fff"}">${b}</div><div class="ks">${s}</div></div>`;
+function renderRisk(){
+  const O=open_(D).sort((a,b)=>(num(a["Days to Target"])??1e9)-(num(b["Days to Target"])??1e9));
+  const cnt=h=>D.filter(r=>r["Overall Health"]===h).length,od=O.filter(r=>(num(r["Days to Target"])??1)<0).length;
+  $("rk").innerHTML=kcard("Open fixtures",O.length,"not yet dispatched")+kcard("Overdue",od,"past target date","var(--r)")+kcard("Health: Fail",cnt("Fail"),"portfolio","var(--r)")+kcard("Health: Risk",cnt("Risk"),"portfolio","var(--a)");
+  $("rlist").innerHTML=O.slice(0,60).map(r=>`<div class="ri${r.Key===cur?" on":""}" data-k="${r.Key}"><div><span class="dot" style="background:${HC[r["Overall Health"]]||"#566"}"></span> ${short(r.Key)}<small>${r.Site||""} · ${r["MFG Status"]||"—"}</small></div><b style="color:${(num(r["Days to Target"])??1)<0?"var(--r)":"#fff"}">${r["Days to Target"]??""}</b></div>`).join("")||'<div class="ks">No open fixtures</div>';
+  $("rsel").innerHTML=D.map(r=>`<option${r.Key===cur?" selected":""}>${r.Key}</option>`).join("");
+  gantt();
+}
+function gantt(){
+  const r=D.find(x=>x.Key===cur);if(!r)return;const T=tasksFor(r),today=new Date(),disp=r["Dispatched?"]==="Yes";
+  const R=DEFS.map((d,i)=>({i:i+1,n:d[0],d:d[1],pl:dt(r[d[2]]),ac:d[3]?dt(r[d[3]]):null,t:T[i]}));
+  const ds=[];R.forEach(x=>{x.pl&&ds.push(+x.pl);x.ac&&ds.push(+x.ac)});if(!disp)ds.push(+today);
+  if(!ds.length){$("grows").innerHTML='<div class="ks" style="padding:20px">No dates for this fixture.</div>';return}
+  const mn=Math.min(...ds)-6048e5,mx=Math.max(...ds)+6048e5,P=d=>((+d-mn)/(mx-mn)*100).toFixed(2)+"%";
+  const f=d=>d?d.toLocaleDateString("en-GB",{day:"2-digit",month:"short",year:"2-digit"}).replace(/ /g,"-"):"—";
+  let ax="",gl="";const m0=new Date(mn);m0.setDate(1);
+  for(let d=new Date(m0.getFullYear(),m0.getMonth()+1,1);+d<mx;d=new Date(d.getFullYear(),d.getMonth()+1,1)){ax+=`<span style="left:${P(d)}">${d.toLocaleDateString("en-GB",{month:"short"})}</span>`;gl+=`<i style="left:${P(d)}"></i>`}
+  $("gax").innerHTML=ax;
+  const sc={Completed:["pdone","#12b076"],"In Progress":["pprog","#e8a43c"],Delayed:["pdel","#e05252"],"Not Started":["pns","#9aa7b8"]};
+  $("grows").innerHTML=R.map(x=>{
+    let b="";const late=x.t.v>0;
+    if(x.pl&&x.ac){const a=Math.min(+x.pl,+x.ac),z=Math.max(+x.pl,+x.ac);b+=`<div class="seg" style="left:${P(a)};width:${((z-a)/(mx-mn)*100).toFixed(2)}%;background:${late?"#e05252":"#12b076"}"></div>`}
+    else if(x.pl&&!x.t.p&&today>x.pl&&!disp){b+=`<div class="seg" style="left:${P(x.pl)};width:${((+today-x.pl)/(mx-mn)*100).toFixed(2)}%;background:#e05252"></div>`}
+    if(x.pl)b+=`<div class="dm" style="left:${P(x.pl)};background:#0a84ff"></div>`;
+    if(x.ac)b+=`<div class="dm" style="left:${P(x.ac)};background:${late?"#e05252":"#12b076"}"></div>`;
+    return `<div class="gr"><div class="c1">${x.i}</div><div class="c2" title="${x.n}">${x.n}</div><div class="c3">${x.d}</div><div class="c4">${f(x.pl)}</div><div class="c5">${f(x.ac)}</div><div class="c6">${x.t.p}%</div><div class="c7"><span class="pill ${sc[x.t.s][0]}">${x.t.s}</span></div><div class="tl">${gl}${disp?"":`<div class="td" style="left:${P(today)}"></div>`}${b}</div></div>`}).join("");
+}
+function renderSum(){
+  const A=D.filter(r=>r["Delivery Status"]!=="Cancelled"),O=open_(D),dsp=A.filter(r=>r["Dispatched?"]==="Yes");
+  const c=(L,k)=>L.filter(r=>r["Delivery Status"]===k).length,ot=c(A,"Dispatched on time");
+  const lt=dsp.map(r=>num(r["Fixture LT (days)"])).filter(v=>v!=null),ev=dsp.map(r=>num(r["ETD vs Target (days)"])).filter(v=>v!=null);
+  const avg=a=>a.length?(a.reduce((x,y)=>x+y,0)/a.length).toFixed(1):"—",od=O.filter(r=>(num(r["Days to Target"])??1)<0).length;
+  $("sk").innerHTML=kcard("Active fixtures",A.length,"excl. cancelled")+kcard("Dispatched",dsp.length+" / "+A.length,"delivered","var(--g)")+kcard("On-time delivery",dsp.length?Math.round(ot/dsp.length*100)+"%":"—",ot+" on time","var(--b)")+kcard("Avg lead time",avg(lt)+" d","KO → dispatch")+kcard("Avg ETD vs target",(avg(ev)>0?"+":"")+avg(ev)+" d","+ = late",avg(ev)>0?"var(--r)":"var(--g)")+kcard("Overdue open",od,"past target","var(--r)");
+  const bars=(el,M,cols)=>{const e=Object.entries(M).sort((a,b)=>b[1]-a[1]),mx=Math.max(1,...e.map(x=>x[1]));
+    $(el).innerHTML=e.map(([k,v],i)=>`<div class="bl"><span>${k||"—"}</span><div class="bar"><i style="width:${v/mx*100}%;--c:${(cols&&cols[k])||"#0a84ff"}"></i></div><em>${v}</em></div>`).join("")};
+  const by=(L,f)=>L.reduce((m,r)=>{const k=f(r)||"—";m[k]=(m[k]||0)+1;return m},{});
+  bars("s1",by(D,r=>r["Delivery Status"]),{"Dispatched on time":"#30d158","Dispatched late":"#ff9f0a",Overdue:"#ff453a",Cancelled:"#8e9bb4"});
+  bars("s2",by(A,r=>r["Overall Health"]),{"On track":"#30d158",Risk:"#ff9f0a",Fail:"#ff453a"});
+  bars("s3",by(A,r=>r.Site));bars("s4",by(A,r=>r.Phase));
+  const top=O.filter(r=>num(r["Days to Target"])!=null).sort((a,b)=>num(a["Days to Target"])-num(b["Days to Target"])).slice(0,12);
+  $("s5").innerHTML="<tr><th>Fixture</th><th>Site</th><th>MFG status</th><th>Days</th></tr>"+top.map(r=>`<tr><td>${short(r.Key)}</td><td>${r.Site||""}</td><td>${r["MFG Status"]||"—"}</td><td style="color:var(--r);font-weight:700">${r["Days to Target"]}</td></tr>`).join("");
+}
+$("nav").onclick=e=>{const b=e.target.closest("button");if(!b)return;
+  document.querySelectorAll(".nav button").forEach(x=>x.classList.toggle("on",x===b));
+  document.querySelectorAll(".view").forEach(v=>v.classList.toggle("on",v.id===b.dataset.v))};
+$("rlist").onclick=e=>{const it=e.target.closest(".ri");if(it){cur=it.dataset.k;show();renderRisk()}};
+$("rsel").onchange=e=>{cur=e.target.value;show();renderRisk()};
 async function load(){
   try{
     if(!API_URL.startsWith("http"))throw Error("set API_URL in the page settings");
@@ -190,7 +291,7 @@ async function load(){
     const j=await res.json();if(j.error)throw Error(j.error);
     D=j.fixtures.filter(r=>r.Key);
     if(!D.some(r=>r.Key===cur))cur=D.some(r=>r.Key===j.selectedFixture)?j.selectedFixture:(D[0]||{}).Key||"";
-    portfolio(true);show();
+    portfolio(true);show();renderRisk();renderSum();
     $("note").textContent="Refreshes every 30 s. Click a status card to filter tasks.";
   }catch(e){portfolio(false,e.message);$("note").textContent="Could not load data: "+e.message}
 }
